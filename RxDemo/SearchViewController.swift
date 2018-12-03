@@ -16,26 +16,12 @@ class SearchViewController: UIViewController {
 
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search for gifs"
+        searchController.searchBar.placeholder = "Search Giphy"
         return searchController
     }()
 
     private var disposeBag = DisposeBag()
     private var viewModel = SearchViewModel()
-    private var gifs = [SearchResultModel]()
-
-    var searchBar: UISearchBar {
-        return searchController.searchBar
-    }
-
-    private var latestQuery: Observable<String> {
-        return searchController.searchBar
-            .rx.text
-            .orEmpty
-            .filter { $0.count > 1 }
-            .debounce(0.5, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,16 +46,14 @@ class SearchViewController: UIViewController {
         searchController.searchBar.autocapitalizationType = .none
     }
 
-    private func parseJSONResults(_ data: Data) -> Any {
-        return data as Any
-    }
-
-    private func parseRemoteModels(_ json: Any) -> [URL?] {
-        return json as! [URL?]
-    }
-
     private func setupRx() {
-        latestQuery
+        let query = searchController.searchBar.rx.text
+            .orEmpty
+            .filter { $0.count > 1 }
+            .debounce(0.5, scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+
+        query
             .bind(to: viewModel.query)
             .disposed(by: disposeBag)
 
@@ -79,20 +63,6 @@ class SearchViewController: UIViewController {
                 cell.bind(model)
             }
             .disposed(by: disposeBag)
-
-//        // log results
-//        latestQuery
-//            .subscribe(onNext: {
-//                NSLog("\($0)")
-//            })
-//            .disposed(by: disposeBag)
-//
-//        viewModel
-//            .fetchResults()
-//            .subscribe(onNext: {
-//                NSLog("\($0)")
-//            })
-//            .disposed(by: disposeBag)
     }
 }
 
@@ -102,6 +72,7 @@ class Cell: UICollectionViewCell {
 
     func bind(_ model: SearchResultModel) {
         model.image
+            // stop loading the image if the cell is reused
             .takeUntil(rx.methodInvoked(#selector(prepareForReuse)))
             .asDriver(onErrorJustReturn: nil)
             .drive(imageView!.rx.image)
