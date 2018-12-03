@@ -1,1 +1,8 @@
-/Carthage
+# Xcode
+xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+*.framework.zip
+
+# Carthage
+Carthage
