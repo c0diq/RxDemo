@@ -8,6 +8,7 @@
 
 import RxCocoa
 import RxSwift
+import SwiftGif
 import UIKit
 
 protocol ImageLoading {
