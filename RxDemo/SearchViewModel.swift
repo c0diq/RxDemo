@@ -49,13 +49,13 @@ struct SearchViewModel {
     let query = PublishSubject<String>()
 
     // outputs
-    lazy var results: Driver<[SearchResultModel]> = self.fetchResults()
+    lazy var results: Observable<[SearchResultModel]> = self.fetchResults()
 
     // private
     let imageLoader = ImageLoader(maxConcurrentDownloadCount: 3)
     let scheduler = ConcurrentDispatchQueueScheduler(qos: .background)
 
-    func fetchResults() -> Driver<[SearchResultModel]> {
+    func fetchResults() -> Observable<[SearchResultModel]> {
         return query
             // performs API call and parsing on background thread
             .observeOn(scheduler)
@@ -72,6 +72,7 @@ struct SearchViewModel {
                     // immediately send empty result to indicate new fetch is starting
                     .startWith([])
             }
-            .asDriver(onErrorJustReturn: [])
+            .catchErrorJustReturn([])
+            .observeOn(MainScheduler.instance)
     }
 }

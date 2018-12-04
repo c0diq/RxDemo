@@ -31,10 +31,12 @@ class SearchViewController: UIViewController {
 
     private func setupProperties() {
         collectionView.dataSource = nil
+        collectionView.delegate = nil
+
         let flowLayout = UICollectionViewFlowLayout()
-        let size = (collectionView.frame.size.width - CGFloat(30)) / CGFloat(3)
+        let size = (collectionView.frame.size.width - CGFloat(30)) / CGFloat(1)
         flowLayout.itemSize = CGSize(width: size, height: size)
-        collectionView.setCollectionViewLayout(flowLayout, animated: true)
+        collectionView.setCollectionViewLayout(flowLayout, animated: false)
 
         navigationItem.searchController = searchController
         navigationItem.title = "Giphy"
