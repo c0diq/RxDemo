@@ -59,6 +59,7 @@ class SearchViewController: UIViewController {
 
         viewModel
             .fetchResults()
+            .asObservable()
             .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: Cell.self)) { row, model, cell in
                 cell.bind(model)
             }
@@ -68,13 +69,15 @@ class SearchViewController: UIViewController {
 
 class Cell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
-    let disposeBag = DisposeBag()
+
+    private(set) var disposeBag = DisposeBag()
+
+    override func prepareForReuse() {
+        disposeBag = DisposeBag()
+    }
 
     func bind(_ model: SearchResultModel) {
         model.image
-            // stop loading the image if the cell is reused
-            .takeUntil(rx.methodInvoked(#selector(prepareForReuse)))
-            .asDriver(onErrorJustReturn: nil)
             .drive(imageView!.rx.image)
             .disposed(by: disposeBag)
     }

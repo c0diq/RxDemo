@@ -14,6 +14,11 @@
 		488D3B6021B15426000257A5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488D3B5F21B15426000257A5 /* SearchViewController.swift */; };
 		488D3B6221B18B98000257A5 /* mockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488D3B6121B18B98000257A5 /* mockData.swift */; };
 		488D3B7221B26766000257A5 /* SwiftGif.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D3B6F21B26756000257A5 /* SwiftGif.framework */; };
+		48C67A9C21B6B1FF00943631 /* SwiftGif.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488D3B6F21B26756000257A5 /* SwiftGif.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48C67A9D21B6B1FF00943631 /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488ADCD421AC8981004F1799 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48C67A9E21B6B20000943631 /* RxCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488ADCD621AC8981004F1799 /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48C67A9F21B6B20A00943631 /* RxAtomic.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 488ADCD221AC8981004F1799 /* RxAtomic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48C67AA121B6B3AB00943631 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C67AA021B6B3AB00943631 /* ImageLoader.swift */; };
 		48DBF2EA21A8E17500EA8CE7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DBF2E921A8E17500EA8CE7 /* AppDelegate.swift */; };
 		48DBF2EF21A8E17500EA8CE7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48DBF2ED21A8E17500EA8CE7 /* Main.storyboard */; };
 		48DBF2F121A8E17700EA8CE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48DBF2F021A8E17700EA8CE7 /* Assets.xcassets */; };
@@ -121,6 +126,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		48C67A9B21B6B1F400943631 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				48C67A9F21B6B20A00943631 /* RxAtomic.framework in CopyFiles */,
+				48C67A9C21B6B1FF00943631 /* SwiftGif.framework in CopyFiles */,
+				48C67A9D21B6B1FF00943631 /* RxSwift.framework in CopyFiles */,
+				48C67A9E21B6B20000943631 /* RxCocoa.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		488ADCC421AC8981004F1799 /* Rx.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Rx.xcodeproj; path = Carthage/Checkouts/RxSwift/Rx.xcodeproj; sourceTree = "<group>"; };
 		488ADCEA21AC8A58004F1799 /* RxDemo.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RxDemo.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -128,6 +149,7 @@
 		488D3B5F21B15426000257A5 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		488D3B6121B18B98000257A5 /* mockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mockData.swift; sourceTree = "<group>"; };
 		488D3B6321B26756000257A5 /* SwiftGif.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftGif.xcodeproj; path = Carthage/Checkouts/SwiftGif/SwiftGif.xcodeproj; sourceTree = "<group>"; };
+		48C67AA021B6B3AB00943631 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		48DBF2E621A8E17500EA8CE7 /* RxDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DBF2E921A8E17500EA8CE7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48DBF2EE21A8E17500EA8CE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -216,6 +238,7 @@
 				488D3B5F21B15426000257A5 /* SearchViewController.swift */,
 				488D3B5321B153D8000257A5 /* SearchViewModel.swift */,
 				488D3B6121B18B98000257A5 /* mockData.swift */,
+				48C67AA021B6B3AB00943631 /* ImageLoader.swift */,
 			);
 			path = RxDemo;
 			sourceTree = "<group>";
@@ -239,6 +262,7 @@
 				48DBF2E221A8E17500EA8CE7 /* Sources */,
 				48DBF2E321A8E17500EA8CE7 /* Frameworks */,
 				48DBF2E421A8E17500EA8CE7 /* Resources */,
+				48C67A9B21B6B1F400943631 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -413,6 +437,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				488D3B6021B15426000257A5 /* SearchViewController.swift in Sources */,
+				48C67AA121B6B3AB00943631 /* ImageLoader.swift in Sources */,
 				488D3B6221B18B98000257A5 /* mockData.swift in Sources */,
 				488D3B5421B153D8000257A5 /* SearchViewModel.swift in Sources */,
 				48DBF2EA21A8E17500EA8CE7 /* AppDelegate.swift in Sources */,
@@ -566,6 +591,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 88JDV4Z9HA;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = RxDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -583,6 +609,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 88JDV4Z9HA;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = RxDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

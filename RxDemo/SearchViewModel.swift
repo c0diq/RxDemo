@@ -28,21 +28,19 @@ struct APISearchResultsModel: Decodable {
 }
 
 struct SearchResultModel {
-    let image: Observable<UIImage?>
+    let image: Driver<UIImage?>
 
-    init?(url: URL?) {
+    init?(url: URL?, imageLoader: ImageLoading) {
         guard let url = url else { return nil }
 
-        self.image = Observable.just(url)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .flatMap { URLSession.shared.rx.data(request: URLRequest(url: $0)) }
-            .map { UIImage.gif(data: $0) }
+        self.image = imageLoader.fetch(at: url)
+            .asDriver(onErrorJustReturn: nil)
     }
 
-    init?(model: APISearchResultModel) {
+    init?(model: APISearchResultModel, imageLoader: ImageLoading) {
         guard let url = model.images["fixed_height"]?.url else { return nil }
 
-        self.init(url: url)
+        self.init(url: url, imageLoader: imageLoader)
     }
 }
 
@@ -51,24 +49,29 @@ struct SearchViewModel {
     let query = PublishSubject<String>()
 
     // outputs
-    lazy var results: Observable<[SearchResultModel]> = self.fetchResults()
+    lazy var results: Driver<[SearchResultModel]> = self.fetchResults()
 
-    func fetchResults() -> Observable<[SearchResultModel]> {
+    // private
+    let imageLoader = ImageLoader(maxConcurrentDownloadCount: 3)
+    let scheduler = ConcurrentDispatchQueueScheduler(qos: .background)
+
+    func fetchResults() -> Driver<[SearchResultModel]> {
         return query
             // performs API call and parsing on background thread
-            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .flatMapLatest { query -> Observable<[SearchResultModel]> in
+            .observeOn(scheduler)
+            .flatMapLatest { [imageLoader] query -> Observable<[SearchResultModel]> in
                 let url = URL(string: "https://api.giphy.com/v1/gifs/search?api_key=1GvPrRNGoJwT4EAzvAjXVqriydG3YFm1&q=\(query)")!
                 let request = URLRequest(url: url)
                 
-                return URLSession.shared.rx.data(request: request)
+                return imageLoader.flush()
+                    .andThen(URLSession.shared.rx.data(request: request))
                     .map { try JSONDecoder().decode(APISearchResultsModel.self, from: $0) }
-                    .map { $0.data.compactMap(SearchResultModel.init) }
+                    .map { [imageLoader] results in
+                        results.data.compactMap { SearchResultModel(model: $0, imageLoader: imageLoader) }
+                    }
                     // immediately send empty result to indicate new fetch is starting
                     .startWith([])
             }
-            .catchErrorJustReturn([])
-            // forwards events on main thread
-            .observeOn(MainScheduler.instance)
+            .asDriver(onErrorJustReturn: [])
     }
 }
