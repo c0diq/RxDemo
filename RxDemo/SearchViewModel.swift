@@ -60,6 +60,8 @@ struct SearchViewModel {
             // performs API call and parsing on background thread
             .observeOn(scheduler)
             .flatMapLatest { [imageLoader] query -> Observable<[SearchResultModel]> in
+                guard query.count > 0 else { return .just([]) }
+                
                 let url = URL(string: "https://api.giphy.com/v1/gifs/search?api_key=1GvPrRNGoJwT4EAzvAjXVqriydG3YFm1&q=\(query)")!
                 let request = URLRequest(url: url)
                 
@@ -69,8 +71,6 @@ struct SearchViewModel {
                     .map { [imageLoader] results in
                         results.data.compactMap { SearchResultModel(model: $0, imageLoader: imageLoader) }
                     }
-                    // immediately send empty result to indicate new fetch is starting
-                    .startWith([])
             }
             .catchErrorJustReturn([])
             .observeOn(MainScheduler.instance)

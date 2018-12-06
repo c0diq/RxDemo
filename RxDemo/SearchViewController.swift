@@ -16,7 +16,10 @@ class SearchViewController: UIViewController {
 
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search Giphy"
+        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.obscuresBackgroundDuringPresentation = false
         return searchController
     }()
 
@@ -42,10 +45,7 @@ class SearchViewController: UIViewController {
         navigationItem.title = "Giphy"
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.topViewController?.definesPresentationContext = true
-
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
+        definesPresentationContext = true
     }
 
     private func setupRx() {
@@ -55,6 +55,13 @@ class SearchViewController: UIViewController {
             .debounce(0.5, scheduler: MainScheduler.instance)
             .distinctUntilChanged()
 
+        searchController.searchBar.rx.searchButtonClicked
+            .do(onNext: { [searchController] _ in
+                searchController.isActive = false
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
+
         query
             .bind(to: viewModel.query)
             .disposed(by: disposeBag)
@@ -62,10 +69,21 @@ class SearchViewController: UIViewController {
         viewModel
             .fetchResults()
             .asObservable()
+            .do(onNext: { [collectionView] _ in
+                // scroll back to the top
+                collectionView?.resetScrollPositionToTop()
+            })
             .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: Cell.self)) { row, model, cell in
                 cell.bind(model)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+extension UIScrollView {
+    /// Sets content offset to the top.
+    func resetScrollPositionToTop() {
+        self.contentOffset = CGPoint(x: -contentInset.left, y: -contentInset.top)
     }
 }
 
@@ -76,6 +94,8 @@ class Cell: UICollectionViewCell {
 
     override func prepareForReuse() {
         disposeBag = DisposeBag()
+
+        imageView.image = nil
     }
 
     func bind(_ model: SearchResultModel) {
