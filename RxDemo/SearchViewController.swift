@@ -44,7 +44,7 @@ class SearchViewController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.title = "Giphy"
         navigationItem.hidesSearchBarWhenScrolling = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
         definesPresentationContext = true
     }
 
@@ -71,19 +71,12 @@ class SearchViewController: UIViewController {
             .asObservable()
             .do(onNext: { [collectionView] _ in
                 // scroll back to the top
-                collectionView?.resetScrollPositionToTop()
+                collectionView?.contentOffset = CGPoint(x: 0, y: 0)
             })
             .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: Cell.self)) { row, model, cell in
                 cell.bind(model)
             }
             .disposed(by: disposeBag)
-    }
-}
-
-extension UIScrollView {
-    /// Sets content offset to the top.
-    func resetScrollPositionToTop() {
-        self.contentOffset = CGPoint(x: -contentInset.left, y: -contentInset.top)
     }
 }
 
