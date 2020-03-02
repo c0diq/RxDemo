@@ -1,2 +1,2 @@
-github "ReactiveX/RxSwift" "4.4.0"
-github "swiftgif/SwiftGif" "c6ec0a1dbb13f11dc0cb689395ef7bcd639d3c69"
+github "ReactiveX/RxSwift" "5.0.1"
+github "swiftgif/SwiftGif" "v1.7.0"
