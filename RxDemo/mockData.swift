@@ -3,7 +3,7 @@
 //  RxDemo
 //
 //  Created by Sylvain Rebaud on 11/30/18.
-//  Copyright © 2018 Fitbit. All rights reserved.
+//  Copyright © 2018 Plutinosoft. All rights reserved.
 //
 
 import Foundation

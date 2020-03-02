@@ -117,13 +117,6 @@
 			remoteGlobalIDString = 14FF87D11D6B7BAA00FB208A;
 			remoteInfo = SwiftGif;
 		};
-		488D3B7021B26756000257A5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 488D3B6321B26756000257A5 /* SwiftGif.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14FF87D91D6B7BAA00FB208A;
-			remoteInfo = SwiftGifTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -203,7 +196,6 @@
 				488D3B6B21B26756000257A5 /* SwiftGifDemo.app */,
 				488D3B6D21B26756000257A5 /* SwiftGifTests.xctest */,
 				488D3B6F21B26756000257A5 /* SwiftGif.framework */,
-				488D3B7121B26756000257A5 /* SwiftGifTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -281,7 +273,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = Fitbit;
+				ORGANIZATIONNAME = Plutinosoft;
 				TargetAttributes = {
 					48DBF2E521A8E17500EA8CE7 = {
 						CreatedOnToolsVersion = 10.0;
@@ -407,13 +399,6 @@
 			fileType = wrapper.framework;
 			path = SwiftGif.framework;
 			remoteRef = 488D3B6E21B26756000257A5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		488D3B7121B26756000257A5 /* SwiftGifTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftGifTests.xctest;
-			remoteRef = 488D3B7021B26756000257A5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -598,7 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fitbit.RxDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.plutinosoft.RxDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -616,7 +601,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fitbit.RxDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.plutinosoft.RxDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
