@@ -52,7 +52,7 @@ class SearchViewController: UIViewController {
         let query = searchController.searchBar.rx.text
             .orEmpty
             .filter { $0.count > 1 }
-            .debounce(0.5, scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
 
         searchController.searchBar.rx.searchButtonClicked

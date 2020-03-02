@@ -13,44 +13,36 @@ import UIKit
 
 protocol ImageLoading {
     func fetch(at url: URL) -> Single<UIImage?>
-    func flush() -> Completable
 }
 
-class ImageLoader: ImageLoading {
-    var cache = [URL: Data]()
-    var scheduler: OperationQueueScheduler
+final class ImageLoader: ImageLoading {
+    private var cache = NSCache<NSString, UIImage>()
+    private var scheduler = ConcurrentDispatchQueueScheduler(qos: .background)
 
-    init(maxConcurrentDownloadCount: Int) {
-        let operationQueue = OperationQueue()
-        operationQueue.maxConcurrentOperationCount = maxConcurrentDownloadCount
-        scheduler = OperationQueueScheduler(operationQueue: operationQueue, queuePriority: .normal)
+    init(maxBytesSize: Int) {
+        cache.totalCostLimit = maxBytesSize
     }
 
     func fetch(at url: URL) -> Single<UIImage?> {
         return Single.deferred { [weak self] () in
             guard let `self` = self else { return .just(nil) }
 
-            if let data = self.cache[url] {
-                return Single.just(data)
-                    .map { UIImage.gif(data: $0) }
+            if let image = self.cache.object(forKey: url.absoluteString as NSString) {
+                return Single.just(image)
             }
 
             return Observable.just(url)
                 .flatMap { URLSession.shared.rx.data(request: URLRequest(url: $0)) }
-                .do(onNext: { [weak self] data in
-                    self?.cache[url] = data
+                .map { (data: $0, image: UIImage.gif(data: $0)) }
+                .do(onNext: { [weak self] data, image in
+                    if image != nil {
+                        self?.cache.setObject(image!, forKey: url.absoluteString as NSString, cost: data.count)
+                    }
                 })
-                .map { UIImage.gif(data: $0) }
+                .map { $0.image }
                 .catchErrorJustReturn(nil)
                 .asSingle()
         }
         .subscribeOn(self.scheduler)
-    }
-
-    func flush() -> Completable {
-        return Completable.deferred { [weak self] in
-            self?.cache = [URL: Data]()
-            return .empty()
-        }
     }
 }

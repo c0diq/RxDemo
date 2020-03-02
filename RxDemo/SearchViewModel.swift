@@ -52,7 +52,7 @@ struct SearchViewModel {
     lazy var results: Observable<[SearchResultModel]> = self.fetchResults()
 
     // private
-    let imageLoader = ImageLoader(maxConcurrentDownloadCount: 3)
+    let imageLoader = ImageLoader(maxBytesSize: 1000 * 1024)
     let scheduler = ConcurrentDispatchQueueScheduler(qos: .background)
 
     func fetchResults() -> Observable<[SearchResultModel]> {
@@ -65,8 +65,7 @@ struct SearchViewModel {
                 let url = URL(string: "https://api.giphy.com/v1/gifs/search?api_key=1GvPrRNGoJwT4EAzvAjXVqriydG3YFm1&q=\(query)")!
                 let request = URLRequest(url: url)
                 
-                return imageLoader.flush()
-                    .andThen(URLSession.shared.rx.data(request: request))
+                return URLSession.shared.rx.data(request: request)
                     .map { try JSONDecoder().decode(APISearchResultsModel.self, from: $0) }
                     .map { [imageLoader] results in
                         results.data.compactMap { SearchResultModel(model: $0, imageLoader: imageLoader) }
